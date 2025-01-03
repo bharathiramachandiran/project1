@@ -1,0 +1,141 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'Sample template for romex backend api'
+Globals:
+  Function:
+    Timeout: 480
+Parameters:
+
+  DBInstanceClass:
+    Type: String
+    Default: ""
+    Description: DBInstanceClass
+  Username:
+    Type: String
+    Default: ""
+    Description: MasterUsername
+  Password:
+    Type: String
+    Default: ""
+    Description: Password
+  Region:
+    Type: String
+    Default: ""
+  ResourcePrefix:
+    Type: String
+    Default: ""
+  Environment:
+    Type: String
+    Default: dev
+  SecretArn:
+    Type: String
+    Default: ""
+  StatsTable:
+    Type: String
+    Default: stats
+  VendorManagementTable:
+    Type: String
+    Default: vendor_management
+  RoleManagementTable:
+    Type: String
+    Default: role_management
+  PrioritySphareTable:
+    Type: String
+    Default: priority_sphare
+  UserManagementTable:
+    Type: String
+    Default: user_management
+  PolicyManagementTable:
+    Type: String
+    Default: policy_management
+  TenenantManagementTable:
+    Type: String
+    Default: tenant_management
+  DailyReportTable:
+    Type: String
+    Default: daily_reports
+  SecretArnForCRM:
+    Type: String
+    Default: ""
+
+Resources:
+  
+  LambdaExecutionRoles:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join ['-', [!Ref ResourcePrefix, !Ref Environment, executionrole]]
+      Path: '/'
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+        - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonTextractFullAccess
+      Policies:
+        - PolicyName: !Join ['-', [!Ref ResourcePrefix, !Ref Environment, function-policy]]
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:*
+                  - logs:CreateLogGroup
+                  - logs:PutLogEvents
+                  - logs:CreateLogStream
+                  - cloudwatch:*
+                  - dynamodb:*
+                  - sqs:*
+                  - ses:*
+                  - cognito-idp:*
+                  - secretsmanager:*
+                  - s3:*
+                Resource: "*"
+# resources for lambda functions
+  
+  S3TriggerLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ['-', [!Ref ResourcePrefix, !Ref Environment, s3-trigger]]
+      CodeUri: ../src/
+      MemorySize: 256
+      Handler: s3_trigger.s3_trigger
+      Runtime: python3.9  
+      Tracing: Active
+      Role: !GetAtt LambdaExecutionRoles.Arn
+      Environment:
+        Variables:
+          REGION: !Ref Region
+          SECRET_ARN: !Ref SecretArn
+          USER_MANAGEMENT: !Ref UserManagementTable
+          VENDOR_MANAGEMENT: !Ref VendorManagementTable
+          TENANT_MANAGEMENT: !Ref TenenantManagementTable
+          POLICY_MANAGEMENT: !Ref PolicyManagementTable
+          ROLE_MANAGEMENT: !Ref RoleManagementTable
+          DAILY_REPORT: !Ref DailyReportTable
+          STATS: !Ref StatsTable
+      Layers:
+       - !Ref AppLayers
+      Tags:
+        Project: !Ref ResourcePrefix
+        Environment: !Ref Environment
+
+
+#Resource For api gateway
+
+  ApiGatewayInvokeLambdaPermissionApiTrigger:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref ApiTriggerLambdaFunction
+      Principal: 'apigateway.amazonaws.com'
