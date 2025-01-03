@@ -124,8 +124,8 @@ Resources:
           ROLE_MANAGEMENT: !Ref RoleManagementTable
           DAILY_REPORT: !Ref DailyReportTable
           STATS: !Ref StatsTable
-      Layers:
-       - !Ref AppLayers
+      # Layers:
+      #  - !Ref AppLayers
       Tags:
         Project: !Ref ResourcePrefix
         Environment: !Ref Environment
