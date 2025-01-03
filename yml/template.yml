@@ -116,14 +116,6 @@ Resources:
       Environment:
         Variables:
           REGION: !Ref Region
-          SECRET_ARN: !Ref SecretArn
-          USER_MANAGEMENT: !Ref UserManagementTable
-          VENDOR_MANAGEMENT: !Ref VendorManagementTable
-          TENANT_MANAGEMENT: !Ref TenenantManagementTable
-          POLICY_MANAGEMENT: !Ref PolicyManagementTable
-          ROLE_MANAGEMENT: !Ref RoleManagementTable
-          DAILY_REPORT: !Ref DailyReportTable
-          STATS: !Ref StatsTable
       # Layers:
       #  - !Ref AppLayers
       Tags:
@@ -133,9 +125,9 @@ Resources:
 
 #Resource For api gateway
 
-  ApiGatewayInvokeLambdaPermissionApiTrigger:
-    Type: 'AWS::Lambda::Permission'
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref ApiTriggerLambdaFunction
-      Principal: 'apigateway.amazonaws.com'
+  # ApiGatewayInvokeLambdaPermissionApiTrigger:
+  #   Type: 'AWS::Lambda::Permission'
+  #   Properties:
+  #     Action: 'lambda:InvokeFunction'
+  #     FunctionName: !Ref ApiTriggerLambdaFunction
+  #     Principal: 'apigateway.amazonaws.com'
