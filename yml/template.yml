@@ -6,18 +6,18 @@ Globals:
     Timeout: 480
 Parameters:
 
-  DBInstanceClass:
-    Type: String
-    Default: ""
-    Description: DBInstanceClass
-  Username:
-    Type: String
-    Default: ""
-    Description: MasterUsername
-  Password:
-    Type: String
-    Default: ""
-    Description: Password
+  # DBInstanceClass:
+  #   Type: String
+  #   Default: ""
+  #   Description: DBInstanceClass
+  # Username:
+  #   Type: String
+  #   Default: ""
+  #   Description: MasterUsername
+  # Password:
+  #   Type: String
+  #   Default: ""
+  #   Description: Password
   Region:
     Type: String
     Default: ""
@@ -27,36 +27,36 @@ Parameters:
   Environment:
     Type: String
     Default: dev
-  SecretArn:
-    Type: String
-    Default: ""
-  StatsTable:
-    Type: String
-    Default: stats
-  VendorManagementTable:
-    Type: String
-    Default: vendor_management
-  RoleManagementTable:
-    Type: String
-    Default: role_management
-  PrioritySphareTable:
-    Type: String
-    Default: priority_sphare
-  UserManagementTable:
-    Type: String
-    Default: user_management
-  PolicyManagementTable:
-    Type: String
-    Default: policy_management
-  TenenantManagementTable:
-    Type: String
-    Default: tenant_management
-  DailyReportTable:
-    Type: String
-    Default: daily_reports
-  SecretArnForCRM:
-    Type: String
-    Default: ""
+  # SecretArn:
+  #   Type: String
+  #   Default: ""
+  # StatsTable:
+  #   Type: String
+  #   Default: stats
+  # VendorManagementTable:
+  #   Type: String
+  #   Default: vendor_management
+  # RoleManagementTable:
+  #   Type: String
+  #   Default: role_management
+  # PrioritySphareTable:
+  #   Type: String
+  #   Default: priority_sphare
+  # UserManagementTable:
+  #   Type: String
+  #   Default: user_management
+  # PolicyManagementTable:
+  #   Type: String
+  #   Default: policy_management
+  # TenenantManagementTable:
+  #   Type: String
+  #   Default: tenant_management
+  # DailyReportTable:
+  #   Type: String
+  #   Default: daily_reports
+  # SecretArnForCRM:
+  #   Type: String
+  #   Default: ""
 
 Resources:
   
