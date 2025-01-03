@@ -62,13 +62,13 @@ phases:
         - python -m pip install --upgrade aws-sam-cli
         - python -m pip install pyOpenSSL --upgrade
         - sam --version
-        - cd layer
-        - mkdir python
-        - cd python
-        - pip install -r ../requirements.txt
-        - ls -lhrt
-        - cd ../..
-        - echo ${REGION}
+        # - cd layer
+        # - mkdir python
+        # - cd python
+        # - pip install -r ../requirements.txt
+        # - ls -lhrt
+        # - cd ../..
+        # - echo ${REGION}
     build:
       commands:
         - echo Building AWS SAM application...
